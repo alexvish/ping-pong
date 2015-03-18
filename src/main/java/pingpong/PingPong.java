@@ -3,7 +3,9 @@ package pingpong;
 public class PingPong {
 
 	private static final long CYCLES = 1000L * 1000L;
-	    
+	
+	private volatile boolean ping = false;
+    
 	public static void main(String[] args) throws Exception {
 		PingPong pingPong = new PingPong();
 		pingPong.doRun();
@@ -31,14 +33,26 @@ public class PingPong {
 	private class PingRunner implements Runnable {
 
 		public void run() {
-
+			int i = 0;
+			while (i < CYCLES) {
+				if (!ping) {
+					i++;
+					ping = true;
+				}
+			}
 		}
 	}
 
 	private class PongRunner implements Runnable {
 
 		public void run() {
-
+			int i = 0;
+			while (i < CYCLES) {
+				if (ping) {
+					i++;
+					ping = false;
+				}
+			}
 		}
 	}
 
