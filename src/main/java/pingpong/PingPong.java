@@ -3,7 +3,10 @@ package pingpong;
 public class PingPong {
 
 	private static final long CYCLES = 1000L * 1000L;
-	    
+	
+	private Object obj = new Object();
+	private boolean ping = false;
+    
 	public static void main(String[] args) throws Exception {
 		PingPong pingPong = new PingPong();
 		pingPong.doRun();
@@ -31,14 +34,46 @@ public class PingPong {
 	private class PingRunner implements Runnable {
 
 		public void run() {
-
+			try {
+				int i = 0;
+				while (i < CYCLES) {
+					synchronized (obj) {
+						if (!ping) {
+							ping = true;
+							i++;
+							obj.notify();
+							obj.notifyAll();
+						} else {
+							obj.wait();
+						}						
+					}
+				}
+			} catch (InterruptedException e) {
+				// log.error
+			}
 		}
 	}
 
 	private class PongRunner implements Runnable {
 
 		public void run() {
-
+			try {
+				int i = 0;
+				while (i < CYCLES) {
+					synchronized (obj) {
+						if (ping) {
+							ping = false;
+							i++;
+							obj.notify();
+							obj.notifyAll();
+						} else {
+							obj.wait();
+						}
+					}
+				}
+			} catch (InterruptedException e) {
+				// log.error
+			}
 		}
 	}
 

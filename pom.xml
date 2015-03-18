@@ -4,7 +4,7 @@
 
   <groupId>pingpong</groupId>
   <artifactId>ping-pong</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0-waitnotify-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>Ping Pong interview test</name>
